@@ -16,3 +16,16 @@ def get_all_planets():
         )
     return planets_response
 
+@planets_bp.get("/<planets_id>")
+def get_one_planet(planet_id):
+    planet = validate_planet(planet_id)
+    return planet.to_dict(), 200
+
+def validate_planet(planet_id):
+    for planet in planets:
+        if planet.id == planet_id:
+            return planet
+
+
+
+    
