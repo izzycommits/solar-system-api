@@ -31,3 +31,4 @@ class Planet(db.Model):
 #     Planet(2, "Earth", "The green planet"), 
 #     Planet(3, "Jupiter", "The largest planet")
 # ]
+#pass
