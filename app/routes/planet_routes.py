@@ -1,4 +1,4 @@
-from flask import Blueprint, abort, make_response, request
+from flask import Blueprint, abort, make_response, request, Response
 from ..db import db
 from app.models.planet import Planet
 # from app.models.planet import planets
@@ -45,12 +45,25 @@ def get_single_planet(planet_id):
 
     return planet.to_dict()
 
-# @planets_bp.put("/<planet_id>")
-# def update_planet(planet_id):
-#     pass
-    # request_body = request.get_json()
+@planets_bp.put("/<planet_id>")
+def update_planet(planet_id):
+    planet = validate_planet(planet_id)
+    request_body = request.get_json()
 
-    # planet.name = request
+    planet.name = request_body["name"]
+    planet.description = request_body["description"]
+    db.session.commit()
+
+    return Response(status = 204, mimetype = "application/json")
+
+@planets_bp.delete("/<planet_id>")
+def delete_planet(planet_id):
+    planet = validate_planet(planet_id)
+    
+    db.session.delete(planet)
+    db.session.commit()
+
+    return Response(status = 204, mimetype = "application/json")
 
 def validate_planet(planet_id):
     try:
