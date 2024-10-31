@@ -10,8 +10,10 @@ def create_planet():
     request_body = request.get_json()
     name = request_body["name"]
     description = request_body["description"]
+    number_moons = request_body["number_moons"]
+    color = request_body["color"]
 
-    new_planet = Planet(name=name, description=description)
+    new_planet = Planet(name=name, description=description,number_moons=number_moons,color=color)
 
     db.session.add(new_planet)
     db.session.commit()
@@ -21,12 +23,22 @@ def create_planet():
 
 @planets_bp.get("")
 def get_all_planets():
-    query = db.select(Planet).order_by(Planet.id)
-    planets = db.session.scalars(query)
+    query = db.select(Planet)
+    description_param = request.args.get("description")
+    if description_param:
+        query = query.where(Planet.description.ilike(f"%{description_param}%"))
 
+    number_moons_param = request.args.get("number_moons")  
+    if number_moons_param:
+        query = query.where(Planet.number_moons >= 95 ) 
+
+    query=query.order_by(Planet.id)
+    planets = db.session.scalars(query)
     planets_response = [planet.to_dict() for planet in planets]
+    
     return planets_response
 
+    
 @planets_bp.get("/<planet_id>")
 def get_single_planet(planet_id):
     planet = validate_planet(planet_id)
