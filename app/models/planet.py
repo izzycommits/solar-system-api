@@ -17,18 +17,3 @@ class Planet(db.Model):
             number_moons=self.number_moons,
             color=self.color
         )
-
-# class Planet: 
-#     def __init__(self, id, name, description): 
-#         self.id = id
-#         self.name = name
-#         self.description = description 
-        
-
-    
-# planets = [
-#     Planet(1, "Mars", "The red planet"),
-#     Planet(2, "Earth", "The green planet"), 
-#     Planet(3, "Jupiter", "The largest planet")
-# ]
-#pass
